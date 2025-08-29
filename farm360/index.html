@@ -65,8 +65,18 @@
                 if (hotspotType === 'text-audio' && hotspot.audio) {
                   const captionAudio = document.getElementById('caption-audio');
                   if (captionAudio) {
+                    console.log('🎵 Setting audio source to:', hotspot.audio);
                     // Set the audio source on the a-sound element
                     captionAudio.setAttribute('src', hotspot.audio);
+                    
+                    // Wait for audio to load before showing controls
+                    setTimeout(() => {
+                      if (captionAudio.components && captionAudio.components.sound) {
+                        console.log('✅ Audio component ready for:', hotspot.audio);
+                      } else {
+                        console.warn('⚠️ Audio component not ready yet for:', hotspot.audio);
+                      }
+                    }, 500);
                   } else {
                     console.error('❌ Caption audio element not found');
                   }
@@ -198,7 +208,27 @@
         // Initial caption update for the first scene
         updateCaptionForScene('room1');
         
-        // Add audio functionality to the play button using existing logic from script.js
+        // Debug function to check audio status
+        window.debugAudio = function() {
+          const captionAudio = document.getElementById('caption-audio');
+          const audioBtn = document.getElementById('caption-audio-btn');
+          
+          console.log('🔍 Audio Debug Info:');
+          console.log('Caption Audio Element:', captionAudio);
+          console.log('Audio Button:', audioBtn);
+          
+          if (captionAudio) {
+            console.log('Audio src:', captionAudio.getAttribute('src'));
+            console.log('Audio components:', captionAudio.components);
+            console.log('Audio sound component:', captionAudio.components?.sound);
+          }
+          
+          if (window.captionAudioState) {
+            console.log('Audio state:', window.captionAudioState);
+          }
+        };
+        
+        // Add audio functionality to the play button with enhanced error handling
         const audioBtn = document.getElementById('caption-audio-btn');
         const captionAudio = document.getElementById('caption-audio');
         
@@ -208,16 +238,46 @@
           
           audioBtn.addEventListener('click', function(e) {
             e.stopPropagation();
+            
+            // Check if audio component is ready
             if (captionAudio.components && captionAudio.components.sound) {
-              if (window.captionAudioState.isPlaying) {
-                captionAudio.components.sound.stopSound();
+              try {
+                if (window.captionAudioState.isPlaying) {
+                  captionAudio.components.sound.stopSound();
+                  audioBtn.setAttribute('src', '#play');
+                  console.log('✅ Audio stopped');
+                } else {
+                  captionAudio.components.sound.playSound();
+                  audioBtn.setAttribute('src', '#pause');
+                  console.log('✅ Audio started');
+                }
+                window.captionAudioState.isPlaying = !window.captionAudioState.isPlaying;
+              } catch (error) {
+                console.error('❌ Audio playback error:', error);
+                // Reset button state on error
                 audioBtn.setAttribute('src', '#play');
-              } else {
-                captionAudio.components.sound.playSound();
-                audioBtn.setAttribute('src', '#pause');
+                window.captionAudioState.isPlaying = false;
               }
-              window.captionAudioState.isPlaying = !window.captionAudioState.isPlaying;
+            } else {
+              console.error('❌ Audio component not ready');
+              // Try to initialize audio component
+              setTimeout(() => {
+                if (captionAudio.components && captionAudio.components.sound) {
+                  console.log('✅ Audio component now ready');
+                } else {
+                  console.error('❌ Audio component still not ready');
+                }
+              }, 1000);
             }
+          });
+          
+          // Add audio loading indicator
+          captionAudio.addEventListener('audio-loaded', () => {
+            console.log('✅ Audio loaded successfully');
+          });
+          
+          captionAudio.addEventListener('audio-error', (error) => {
+            console.error('❌ Audio loading error:', error);
           });
         } else {
           console.error('❌ Audio elements not found');
