@@ -62,113 +62,21 @@ AFRAME.registerComponent("hotspot", {
   },
 
   createPopup: function(data) {
-    const el = this.el;
-
-    const infoIcon = document.createElement("a-entity");
-    infoIcon.setAttribute("geometry", "primitive: plane; width: 4; height: 0.5");
-    infoIcon.setAttribute("material", "color: #00FF00");
-    infoIcon.setAttribute("text", "value: click for info; align: center; color: black; width: 8");
-    infoIcon.setAttribute("position", "0 1 0");
-    infoIcon.classList.add("clickable");
-    el.appendChild(infoIcon);
-
-    const popup = document.createElement("a-entity");
-    popup.setAttribute("visible", "false");
-    popup.setAttribute("position", "0 1.5 0");
-    popup.setAttribute("look-at", "#cam");
-
-    const background = document.createElement("a-plane");
-    background.setAttribute("color", data.popupColor);
-    background.setAttribute("width", data.popupWidth);
-    background.setAttribute("height", data.popupHeight);
-    background.setAttribute("opacity", 0.95);
-    popup.appendChild(background);
-
-    const text = document.createElement("a-text");
-    text.setAttribute("value", data.popup);
-    text.setAttribute("wrap-count", 35);
-    text.setAttribute("color", "white");
-    text.setAttribute("position", "0 0 0.01");
-    text.setAttribute("align", "center");
-    popup.appendChild(text);
-
-    const closeButton = document.createElement("a-image");
-    closeButton.setAttribute("position", data.popupWidth/2-0.3 + " " + (data.popupHeight/2-0.3) + " 0.02");
-    closeButton.setAttribute("src", "#close");
-    closeButton.setAttribute("width", "0.4");
-    closeButton.setAttribute("height", "0.4");
-    closeButton.classList.add("clickable");
-    popup.appendChild(closeButton);
-
-    infoIcon.addEventListener("click", (e) => {
-      e.stopPropagation();
-      popup.setAttribute("visible", true);
-      infoIcon.setAttribute("visible", false); // Hide info icon when popup is open
-    });
-
-    closeButton.addEventListener("click", (e) => {
-      e.stopPropagation();
-      popup.setAttribute("visible", false);
-      setTimeout(() => {
-        infoIcon.setAttribute("visible", true); // Show info icon when popup is closed
-      }, 250);
-    });
-
-    el.appendChild(popup);
+    // Disabled old popup creation - now using new caption overlay system
+    // This function is kept for compatibility but doesn't create elements
+    return;
   },
 
   createLabel: function(data) {
-    const el = this.el;
-    const labelContainer = document.createElement("a-entity");
-    labelContainer.setAttribute("position", "0 -0.6 0");
-
-    const bg = document.createElement("a-plane");
-    bg.setAttribute("color", "#333333");
-    bg.setAttribute("opacity", 0.8);
-    bg.setAttribute("width", data.label.length * 0.15 + 0.4);
-    bg.setAttribute("height", 0.3);
-
-    const textEl = document.createElement("a-text");
-    textEl.setAttribute("value", data.label);
-    textEl.setAttribute("align", "center");
-    textEl.setAttribute("color", "#FFFFFF");
-
-    labelContainer.appendChild(bg);
-    labelContainer.appendChild(textEl);
-    el.appendChild(labelContainer);
+    // Disabled old label creation - now using new caption overlay system
+    // This function is kept for compatibility but doesn't create elements
+    return;
   },
 
   createAudio: function(data) {
-    const el = this.el;
-    const audioEl = document.createElement("a-sound");
-    audioEl.setAttribute("src", data.audio);
-    audioEl.setAttribute("autoplay", "false");
-    audioEl.setAttribute("loop", "true");
-    el.appendChild(audioEl);
-
-    const btn = document.createElement("a-image");
-    btn.setAttribute("class", "clickable");
-    btn.setAttribute("src", "#play");
-    btn.setAttribute("width", "0.5");
-    btn.setAttribute("height", "0.5");
-    btn.setAttribute("position", "0 -1 0.02");
-    el.appendChild(btn);
-
-    let isPlaying = false;
-
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      if (audioEl.components.sound) {
-        if (isPlaying) {
-          audioEl.components.sound.stopSound();
-          btn.setAttribute("src", "#play");
-        } else {
-          audioEl.components.sound.playSound();
-          btn.setAttribute("src", "#pause");
-        }
-        isPlaying = !isPlaying;
-      }
-    });
+    // Disabled old audio creation - now using new caption overlay system
+    // This function is kept for compatibility but doesn't create elements
+    return;
   }
 });
 
@@ -336,30 +244,16 @@ class HotspotProject {
     
 
     hotspots.forEach(hotspot => {
-      let hotspotEl;
-      if (hotspot.type === 'navigation') {
-        hotspotEl = document.createElement('a-image');
-        hotspotEl.setAttribute('src', '#hotspot');
-        hotspotEl.setAttribute('face-camera', '');
-      } else {
-        hotspotEl = document.createElement('a-entity');
-        hotspotEl.setAttribute('geometry', 'primitive: plane; width: 0.7; height: 0.7');
-        hotspotEl.setAttribute('material', 'opacity: 0; transparent: true');
-        hotspotEl.setAttribute('face-camera', '');
-      }
+      let hotspotEl = document.createElement('a-image');
+      hotspotEl.setAttribute('src', '#hotspot');
+      hotspotEl.setAttribute('face-camera', '');
       hotspotEl.setAttribute('position', hotspot.position);
       hotspotEl.setAttribute('class', 'clickable');
       
-      let config = "label:" + hotspot.label;
-      
-      if (hotspot.type === 'text' || hotspot.type === 'text-audio') {
-        config += ";popup:" + hotspot.text + ";popupWidth:4;popupHeight:2.5;popupColor:#333333";
-      }
-      
-      if (hotspot.type === 'audio' || hotspot.type === 'text-audio') {
-        // Use custom audio URL if available, otherwise use default
-        const audioSrc = hotspot.audio || "#default-audio";
-        config += ";audio:" + audioSrc;
+      // Only create navigation hotspots - skip text, text-audio, and audio hotspots
+      // since we now use the new caption overlay system
+      if (hotspot.type !== 'navigation') {
+        return; // Skip non-navigation hotspots
       }
       
       if (hotspot.type === 'navigation') {
@@ -382,7 +276,6 @@ class HotspotProject {
         });
       }
       
-      hotspotEl.setAttribute('hotspot', config);
       container.appendChild(hotspotEl);
     });
   }
