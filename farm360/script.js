@@ -203,6 +203,11 @@ class HotspotProject {
         // Hide the loading indicator
         this.hideLoadingIndicator();
       }, 100);
+      
+      // Add a fallback to hide loading indicator after a reasonable timeout
+      setTimeout(() => {
+        this.hideLoadingIndicator();
+      }, 5000); // 5 second fallback
     };
     
     // Handle load errors
@@ -215,7 +220,13 @@ class HotspotProject {
     // Start loading the image
     preloadImage.src = imagePathWithCache;
     
-    // We've replaced this with the preloadImage.onerror handler above
+    // Add a timeout fallback to prevent infinite loading
+    setTimeout(() => {
+      if (document.getElementById('scene-loading-indicator')) {
+        console.warn('Loading timeout reached, hiding loading indicator');
+        this.hideLoadingIndicator();
+      }
+    }, 10000); // 10 second timeout
     
     this.currentScene = sceneId;
   }
@@ -256,25 +267,21 @@ class HotspotProject {
         return; // Skip non-navigation hotspots
       }
       
-      if (hotspot.type === 'navigation') {
-        config += ";navigation:" + hotspot.navigationTarget;
-        
-        // Add navigation click handler
-        hotspotEl.addEventListener('click', (e) => {
-          e.stopPropagation();
-          this.navigateToScene(hotspot.navigationTarget);
-        });
-        
-        // Add visual effects for navigation hotspots
-        hotspotEl.setAttribute('material', 'color: #2196F3');
-        hotspotEl.setAttribute('animation__rotate', {
-          property: 'rotation',
-          to: '0 360 0',
-          dur: 4000,
-          easing: 'linear',
-          loop: true
-        });
-      }
+      // Add navigation click handler
+      hotspotEl.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.navigateToScene(hotspot.navigationTarget);
+      });
+      
+      // Add visual effects for navigation hotspots
+      hotspotEl.setAttribute('material', 'color: #2196F3');
+      hotspotEl.setAttribute('animation__rotate', {
+        property: 'rotation',
+        to: '0 360 0',
+        dur: 4000,
+        easing: 'linear',
+        loop: true
+      });
       
       container.appendChild(hotspotEl);
     });
@@ -438,6 +445,12 @@ class HotspotProject {
 
 // Initialize project
 document.addEventListener('DOMContentLoaded', () => {
+  // Ensure any existing loading indicators are hidden
+  const existingLoading = document.getElementById('scene-loading-indicator');
+  if (existingLoading && existingLoading.parentNode) {
+    existingLoading.parentNode.removeChild(existingLoading);
+  }
+  
   setTimeout(() => {
     new HotspotProject();
   }, 1000);
