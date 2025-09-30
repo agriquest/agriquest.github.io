@@ -1,0 +1,158 @@
+{
+  "name": "Xi_Liu_VR_Project",
+  "created": "2025-09-30T00:14:25.511Z",
+  "scenes": {
+    "scene1": {
+      "name": "Scene 1",
+      "image": "https://hkfsgnludtapbbtsacwd.supabase.co/storage/v1/object/public/files/Xi%20Liu/images/IMG-20250924-141358-679_1758739996009.jpg",
+      "hotspots": [
+        {
+          "id": 1,
+          "type": "navigation",
+          "position": "-4.16 2.69 -6.14",
+          "text": "",
+          "scene": "scene1",
+          "navigationTarget": "scene_1758742088182",
+          "audio": null
+        },
+        {
+          "id": 14,
+          "type": "text",
+          "position": "-6.53 2.25 -3.62",
+          "text": "Store",
+          "scene": "scene1",
+          "navigationTarget": null,
+          "audio": null,
+          "popupWidth": 4,
+          "popupHeight": 2.5
+        },
+        {
+          "id": 15,
+          "type": "text",
+          "position": "-2.49 2.06 -7.06",
+          "text": "Cafe",
+          "scene": "scene1",
+          "navigationTarget": null,
+          "audio": null,
+          "popupWidth": 4,
+          "popupHeight": 2.5
+        },
+        {
+          "id": 16,
+          "type": "text",
+          "position": "-6.02 1.73 4.47",
+          "text": "Snack Bar",
+          "scene": "scene1",
+          "navigationTarget": null,
+          "audio": null,
+          "popupWidth": 4,
+          "popupHeight": 2.5
+        }
+      ],
+      "startingPoint": null,
+      "globalSound": null
+    },
+    "scene_1758742088182": {
+      "name": "Apple Orchard",
+      "image": "https://hkfsgnludtapbbtsacwd.supabase.co/storage/v1/object/public/files/Xi%20Liu/images/IMG-20250924-141459-595_1758740009442.jpg",
+      "hotspots": [
+        {
+          "id": 2,
+          "type": "navigation",
+          "position": "-6.97 1.68 -2.76",
+          "text": "",
+          "scene": "scene_1758742088182",
+          "navigationTarget": "scene_1759009225287",
+          "audio": null
+        },
+        {
+          "id": 7,
+          "type": "navigation",
+          "position": "6.02 2.39 4.40",
+          "text": "",
+          "scene": "scene_1758742088182",
+          "navigationTarget": "scene1",
+          "audio": null
+        }
+      ],
+      "startingPoint": null,
+      "globalSound": null
+    },
+    "scene_1759005997520": {
+      "name": "Apple Trees",
+      "image": "https://hkfsgnludtapbbtsacwd.supabase.co/storage/v1/object/public/files/Xi%20Liu/images/IMG-20250924-141507-178_1758740015779.jpg",
+      "hotspots": [
+        {
+          "id": 5,
+          "type": "navigation",
+          "position": "7.35 1.37 1.47",
+          "text": "",
+          "scene": "scene_1759005997520",
+          "navigationTarget": "scene_1759009225287",
+          "audio": null
+        }
+      ],
+      "startingPoint": null,
+      "globalSound": null
+    },
+    "scene_1759009225287": {
+      "name": "Entrance to apple trees",
+      "image": "https://hkfsgnludtapbbtsacwd.supabase.co/storage/v1/object/public/files/Xi%20Liu/images/IMG-20250924-141644-510_1758740047440.jpg",
+      "hotspots": [
+        {
+          "id": 3,
+          "type": "navigation",
+          "position": "5.62 0.50 -4.85",
+          "text": "",
+          "scene": "scene_1759009225287",
+          "navigationTarget": "scene_1759005997520",
+          "audio": null
+        },
+        {
+          "id": 6,
+          "type": "navigation",
+          "position": "-4.82 1.80 5.75",
+          "text": "",
+          "scene": "scene_1759009225287",
+          "navigationTarget": "scene_1758742088182",
+          "audio": null
+        },
+        {
+          "id": 8,
+          "type": "text",
+          "position": "5.50 2.02 -5.08",
+          "text": "Honeycrisp",
+          "scene": "scene_1759009225287",
+          "navigationTarget": null,
+          "audio": null,
+          "popupWidth": 4,
+          "popupHeight": 2.5
+        },
+        {
+          "id": 9,
+          "type": "text",
+          "position": "7.47 1.31 -0.65",
+          "text": "Snap Dragon",
+          "scene": "scene_1759009225287",
+          "navigationTarget": null,
+          "audio": null,
+          "popupWidth": 4,
+          "popupHeight": 2.5
+        },
+        {
+          "id": 17,
+          "type": "audio",
+          "position": "6.44 1.91 -3.84",
+          "text": "",
+          "scene": "scene_1759009225287",
+          "navigationTarget": null,
+          "audio": "https://hkfsgnludtapbbtsacwd.supabase.co/storage/v1/object/public/files/newtest/audio/meadowfield_1754926585990.mp3"
+        }
+      ],
+      "startingPoint": null,
+      "globalSound": null
+    }
+  },
+  "currentScene": "scene1",
+  "version": "1.0"
+}
